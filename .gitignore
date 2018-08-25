@@ -6,3 +6,6 @@ repl-temp-*
 .DS_Store
 dist/
 node_modules/
+
+.idea
+elm-gravatar-app.iml
