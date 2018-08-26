@@ -6479,7 +6479,7 @@ var elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var author$project$JavaMagAuthors$displayAuthor = function (author) {
+var author$project$JavaMagAuthors$viewAuthorRecord = function (author) {
 	return A2(
 		elm$html$Html$li,
 		_List_Nil,
@@ -6516,18 +6516,16 @@ var author$project$JavaMagAuthors$displayAuthor = function (author) {
 			]));
 };
 var elm$html$Html$ul = _VirtualDom_node('ul');
-var author$project$JavaMagAuthors$toHtmlImgList = function (authors) {
+var author$project$JavaMagAuthors$viewAuthorRecords = function (authors) {
 	return A2(
 		elm$html$Html$ul,
 		_List_Nil,
-		A2(elm$core$List$map, author$project$JavaMagAuthors$displayAuthor, authors));
+		A2(elm$core$List$map, author$project$JavaMagAuthors$viewAuthorRecord, authors));
 };
-var elm$html$Html$br = _VirtualDom_node('br');
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$input = _VirtualDom_node('input');
-var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
 var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
@@ -6580,46 +6578,56 @@ var author$project$JavaMagAuthors$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				elm$html$Html$h2,
+				elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text('Add authors to your Java Magazine article')
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Add authors to your Java Magazine article')
+							])),
+						A2(
+						elm$html$Html$input,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$placeholder('Author Email address'),
+								elm$html$Html$Events$onInput(author$project$JavaMagAuthors$AuthorEmail)
+							]),
+						_List_Nil),
+						A2(
+						elm$html$Html$button,
+						_List_fromArray(
+							[
+								elm$html$Html$Events$onClick(author$project$JavaMagAuthors$AddAuthor)
+							]),
+						_List_fromArray(
+							[
+								elm$html$Html$text('Add Author')
+							]))
 					])),
-				A2(
-				elm$html$Html$input,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$placeholder('Author Email address'),
-						elm$html$Html$Events$onInput(author$project$JavaMagAuthors$AuthorEmail)
-					]),
-				_List_Nil),
-				A2(
-				elm$html$Html$button,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('button-add'),
-						elm$html$Html$Events$onClick(author$project$JavaMagAuthors$AddAuthor)
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text('Add Author')
-					])),
-				A2(elm$html$Html$br, _List_Nil, _List_Nil),
-				A2(
-				elm$html$Html$img,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$src(
-						author$project$JavaMagAuthors$createIconUrl(model.newAuthorEmail))
-					]),
-				_List_Nil),
 				A2(
 				elm$html$Html$div,
 				_List_Nil,
 				_List_fromArray(
 					[
-						author$project$JavaMagAuthors$toHtmlImgList(model.authors)
+						A2(
+						elm$html$Html$img,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$src(
+								author$project$JavaMagAuthors$createIconUrl(model.newAuthorEmail))
+							]),
+						_List_Nil),
+						A2(
+						elm$html$Html$div,
+						_List_Nil,
+						_List_fromArray(
+							[
+								author$project$JavaMagAuthors$viewAuthorRecords(model.authors)
+							]))
 					]))
 			]));
 };

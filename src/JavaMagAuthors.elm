@@ -5,14 +5,15 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Http
-import Json.Decode exposing (Decoder, at, field, int, map4, string)
-import Json.Decode.Pipeline exposing (..)
+import Json.Decode exposing (Decoder, at, string)
+import Json.Decode.Pipeline as JsonPipeline
 import MD5
 
 
 
 {--We create a simple Elm element, so we use Browser.element.
-   There are many other options for this, see https://package.elm-lang.org/packages/elm/browser/1.0.0/
+   There are many other ways to create your Elm application.
+   Take a look at to see some examples https://package.elm-lang.org/packages/elm/browser/1.0.0/
 --}
 
 
@@ -73,6 +74,7 @@ update msg model =
             )
 
         GravatarProfile (Err _) ->
+            -- Normally you would show some sort of error to the user
             ( model, Cmd.none )
 
 
@@ -83,22 +85,25 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h2 [] [ text "Add authors to your Java Magazine article" ]
-        , input [ placeholder "Author Email address", onInput AuthorEmail ] []
-        , button [ class "button-add", onClick AddAuthor ] [ text "Add Author" ]
-        , br [] []
-        , img [ src (createIconUrl model.newAuthorEmail) ] []
-        , div [] [ toHtmlImgList model.authors ]
+        [ div []
+            [ h2 [] [ text "Add authors to your Java Magazine article" ]
+            , input [ placeholder "Author Email address", onInput AuthorEmail ] []
+            , button [ onClick AddAuthor ] [ text "Add Author" ]
+            ]
+        , div []
+            [ img [ src (createIconUrl model.newAuthorEmail) ] []
+            , div [] [ viewAuthorRecords model.authors ]
+            ]
         ]
 
 
-toHtmlImgList : List AuthorRecord -> Html Msg
-toHtmlImgList authors =
-    ul [] (List.map displayAuthor authors)
+viewAuthorRecords : List AuthorRecord -> Html Msg
+viewAuthorRecords authors =
+    ul [] (List.map viewAuthorRecord authors)
 
 
-displayAuthor : AuthorRecord -> Html Msg
-displayAuthor author =
+viewAuthorRecord : AuthorRecord -> Html Msg
+viewAuthorRecord author =
     li []
         [ img [ src author.thumbnailUrl ] []
         , p [] [ text ("Display name: " ++ author.displayName) ]
@@ -144,9 +149,9 @@ decodeGravatarResponse =
     let
         authorDecoder =
             Json.Decode.succeed AuthorRecord
-                |> Json.Decode.Pipeline.required "displayName" string
-                |> Json.Decode.Pipeline.optional "aboutMe" string "-"
-                |> Json.Decode.Pipeline.optional "currentLocation" string "-"
-                |> Json.Decode.Pipeline.required "thumbnailUrl" string
+                |> JsonPipeline.required "displayName" string
+                |> JsonPipeline.optional "aboutMe" string "-"
+                |> JsonPipeline.optional "currentLocation" string "-"
+                |> JsonPipeline.required "thumbnailUrl" string
     in
     at [ "entry", "0" ] authorDecoder
