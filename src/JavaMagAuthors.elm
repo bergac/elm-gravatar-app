@@ -10,7 +10,6 @@ import Json.Decode.Pipeline as JsonPipeline
 import MD5
 
 
-
 {--We create a simple Elm element, so we use Browser.element.
    There are many other ways to create your Elm application.
    Take a look at to see some examples https://package.elm-lang.org/packages/elm/browser/1.0.0/
@@ -85,12 +84,12 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ div []
-            [ h2 [] [ text "Add authors to your Java Magazine article" ]
-            , input [ placeholder "Author Email address", onInput AuthorEmail ] []
-            , button [ onClick AddAuthor ] [ text "Add Author" ]
+        [ h2 [] [ text "Add authors to your Java Magazine article" ]
+        , div [ class "add-author-form" ]
+            [ input [ placeholder "Author Email address", onInput AuthorEmail ] []
+            , button [ class "button-add", onClick AddAuthor ] [ text "Add Author" ]
             ]
-        , div []
+        , div [ class "list-authors" ]
             [ img [ src (createIconUrl model.newAuthorEmail) ] []
             , div [] [ viewAuthorRecords model.authors ]
             ]
